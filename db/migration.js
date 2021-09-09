@@ -24,9 +24,10 @@ const createMigrationTable = async knex => {
 }
 
 const migrationAlreadyExecuted = async knex => {
-    const existTable = await knex.raw(`SELECT * FROM tempdb.INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'task' AND TABLE_NAME LIKE '#migration%'`)
+    const existTable = await knex.raw(`SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%migration%'`)
     if (existTable.length === 0)
         return false;
+    return true;
 }
 
 const createSexTable = async knex => {
