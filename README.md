@@ -10,4 +10,7 @@
   4. go to localhost:3000 on your browser
   
   It's important to notice that the software generates 20 mock users for testing purposes. It's possible to delete all, but once the last one gets deleted, it'll create 20 users again
-  Any daubt, please contact me on rodolfo_eliezer@hotmail.com
+
+
+
+Any daubt, please contact me on rodolfo_eliezer@hotmail.com
