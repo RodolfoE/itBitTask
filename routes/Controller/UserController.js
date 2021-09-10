@@ -16,3 +16,5 @@ exports.deleteUser = async (knex, { PersonID, filter }) => {
 
 exports.list = async (knex, filter) => 
     userServices.fillListModel(await userServices.list(knex, userServices.createPredicate(filter)));
+
+exports.sexLookup = async (knex) => await knex.raw(`SELECT * FROM Sex`);

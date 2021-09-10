@@ -1,3 +1,15 @@
+const newPerson = async () => {
+    setListInterface(await execGettReq('register',  { ...getPersonsInfo(), filter: getFilter() }))
+    showSuccessfulMessage(2);
+}
+
+const remove = async PersonID => {   
+    setListInterface(await execGettReq('remove', { PersonID, filter: getFilter() }));
+    showSuccessfulMessage(3);
+}
+
+const list = async () => setListInterface(await execGettReq('list', { filter: getFilter() }));
+
 const setListInterface = (list) => {
     $('#tabelaComponent').empty();
     $('#tabelaComponent').append(
@@ -17,12 +29,40 @@ const setListInterface = (list) => {
     )
 }
 
-const remove = async PersonID => setListInterface(await execGettReq('remove', { PersonID, filter: getFilter() }));
+const getPersonsInfo = () => ({
+     isNew: true, 
+     Name: $('#Name').val(), 
+     BirthDate: new Date($('#BirthDate').val()).toISOString(), 
+     Email: $('#Email').val(), 
+     SexId: $('.sexIdRadio:checked').val(), 
+     Password: $('#Password').val(),
+     Active: 1
+});
 
-const list = async () => setListInterface(await execGettReq('list', { filter: getFilter() }));
+const parseDate = (date) => {
+    const [day, month, year] = date.split('/');
+    return [month, day, year].join('/');
+}
 
-const handleActiveChange = async (Active, PersonID) => 
+const handleActiveChange = async (Active, PersonID) => {
     setListInterface(await execGettReq('register', { Active, PersonID, isEditActive: 1, filter: getFilter() }))
+    showSuccessfulMessage(1);
+}
+
+const showSuccessfulMessage = (n) => {
+    switch(n){
+        case 1:
+            alert('Congratulations, your registry has been altered');
+        break;
+        case 2:
+            alert('Congratulations, your registry has been created');
+        break;
+        case 3: 
+            alert('Congratulations, your registry has been removed');
+        break;
+    }
+}
+
 
 const getActiveRadioBtn = (Active, PersonID) => (`
     <label for="isActive${PersonID}">Yes</label>
@@ -48,6 +88,17 @@ const getFilter = () => {
         obj.NameFilter = NameFilter;
     return obj; q
 }
+
+const showModal = async (model) =>{
+    $('#SexIdComponent').append((await execGettReq('sexLookup')).map(({SexId, Description}) => (
+        `<div>
+            <label for="sexIdRadio">${Description}</label>
+            <input type="radio" class="sexIdRadio pr-2" name="sexIdRadio" value="${SexId}">
+        </div>`
+    )));
+    $('.modal').show();
+}
+    
 
 const needMocks = async () => {
     const list = await execGettReq('list');

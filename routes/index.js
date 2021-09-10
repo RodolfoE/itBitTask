@@ -4,7 +4,7 @@ const UserController = require('./Controller/UserController');
 
 
 /* GET home page. */
-router.get('/RegisterPage', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('cadastrar/cadastrar', { title: 'Register' });
 });
 
@@ -43,6 +43,10 @@ router.get('/remove', async (req, resp, next) => {
     resp.sendStatus(500);
   }
 });
+
+router.get('/sexLookup', async (req, resp) => { 
+  resp.send(await UserController.sexLookup(req.knex));
+})
 
 router.post('/mock_users', async (req, resp) => {
   try{
